@@ -1,3 +1,37 @@
+{% assign url_parts = page.url | split: '/' %}
+      {% assign url_parts_size = url_parts | size %}
+      {% if url_parts_size != 0 %}
+        {% assign rm = url_parts | last %}
+        {% assign base_url = page.url | replace: rm %}
+      {% else %}
+        {% assign base_url = page.url %}
+      {% endif %}
+      <ul>
+      {% for node in site.pages %}
+        {% assign node_url_parts = node.url | split: '/' %}
+        {% assign node_url_parts_size = node_url_parts | size %}
+        {% assign filename = node_url_parts | last %}
+       
+        {% if node_url_parts_size == 2  %}
+            <li>
+            <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a></li>
+            {% if page.url contains node.url %}
+              <ul>
+              {% for node2 in site.pages %}
+                {% if node2.url contains node.url %}
+                  <li><a href='{{node2.url}}'>{{node2.title}}</a></li>
+                {% endif %}
+              {% endfor %}
+              </ul>
+            {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% for num in (1...menu_level) %}
+        </ul>
+      {% endfor %}
+      </ul>
+
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/Corsomk312/styleguides/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
